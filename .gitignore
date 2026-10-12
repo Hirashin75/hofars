@@ -1,0 +1,5 @@
+.env
+*.sqlite
+uploads/*
+!uploads/.gitkeep
+.DS_Store
