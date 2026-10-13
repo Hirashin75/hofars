@@ -28,6 +28,7 @@ Built with **PHP 8 (no framework), MySQL/MariaDB (PDO), vanilla JavaScript and p
 
 **General**
 - Dark mode, responsive layout
+- **Help assistant**: a chat button (bottom-right) that answers "how do I…?" questions for the user's role. Built-in help always works; add a Claude API key to get AI answers (see below)
 - Profile page: username, matric number, profile picture, password change
 
 ## Report lifecycle
@@ -72,6 +73,22 @@ Password for all accounts: `Demo@1234`
 | Technician | tech1@hofars.test, tech2@hofars.test |
 | Student | aisyah@hofars.test, daniel@hofars.test, priya@hofars.test, hafiz@hofars.test |
 
+### Optional: AI chatbot
+
+The chat button works out of the box with built-in answers (keyword matching), no setup needed. To switch on AI answers:
+
+1. Create an API key at https://platform.claude.com and add it to your `.env`:
+   ```
+   ANTHROPIC_API_KEY=your-key-here
+   ```
+2. If you imported `schema.sql` before the chatbot existed, run `database/migrations/001_chat_usage.sql` once. It adds a small table that counts AI calls (new installs already have it).
+3. Reload the site. The chat header now says "AI assistant".
+
+How it behaves:
+- The AI only sees the user's **role** and a fixed list of facts about the system. It never receives names, emails or report contents, and it cannot change any data.
+- Usage is capped by `CHAT_HOURLY_LIMIT` (per user, default 30) and `CHAT_DAILY_LIMIT` (all users, default 300). Over the cap, or if the API is down or unreachable, the assistant quietly falls back to the built-in answers.
+- The key stays on the server in `.env`; the browser never sees it. `CLAUDE_MODEL` defaults to a small, inexpensive model.
+
 Without the seed, sign up as a student on the login page. To create the first admin, run the seed or insert one admin row manually.
 
 ## Project structure
@@ -85,12 +102,26 @@ admin_users.php           create staff accounts
 report.php                report detail, timeline, work reports, review actions
 profile.php               profile + password
 download.php              access-checked file serving
+chat.php                  JSON endpoint behind the chat widget
 includes/bootstrap.php    config, DB, session, security helpers
-includes/layout.php       shared header / footer
+includes/layout.php       shared header / footer (+ chat widget)
+includes/chatbot.php      built-in FAQ, Claude API call, usage limits
 database/schema.sql       tables + facility list
 database/seed.php         fake demo data (CLI only)
-assets/                   style.css, app.js
+database/migrations/      small upgrade scripts for existing databases
+assets/                   style.css, app.js, chat.js
 ```
+
+## Troubleshooting
+
+Turn on `APP_DEBUG=true` in `.env` to see the real error instead of "Something went wrong", and turn it off again afterwards.
+
+| Error | Cause and fix |
+|---|---|
+| `Access denied for user 'root'` | `DB_PASS` in `.env` is missing or wrong. |
+| `Unknown column …` / `Table … doesn't exist` | An old `hofars_db` is still in place. Drop it and re-import `database/schema.sql`. |
+| Chat says "Built-in help" although a key is set | Key not in `.env`, `curl` extension off, or `chat_usage` table missing (run the migration). Check PHP's error log. |
+| Log shows `SSL certificate problem` (Windows) | PHP can't verify HTTPS. Download `cacert.pem` and set `curl.cainfo` in `php.ini`. Don't disable verification. |
 
 ## Deploying a live demo
 

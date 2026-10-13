@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+require_once __DIR__ . '/chatbot.php';
+
 /** Shared page chrome: <head>, navbar, flash messages, footer. */
 
 function nav_items(string $role): array
@@ -77,12 +79,43 @@ function page_header(string $title, string $active = ''): void
 
 function page_footer(): void
 {
+    $user = current_user();
     ?>
     </main>
     <footer class="footer">
         <p>© <?= date('Y') ?> HOFARS · Hostel Facility Damage Report System</p>
     </footer>
+<?php if ($user): ?>
+    <div class="chat-widget" id="chatWidget" data-csrf="<?= e(csrf_token()) ?>">
+        <button type="button" class="chat-toggle" id="chatToggle" aria-expanded="false" aria-controls="chatPanel" aria-label="Open HOFARS assistant">
+            <span aria-hidden="true">💬</span>
+        </button>
+        <section class="chat-panel" id="chatPanel" hidden aria-label="HOFARS assistant">
+            <header class="chat-head">
+                <div class="chat-title">
+                    <strong>HOFARS Assistant</strong>
+                    <small id="chatMode">Built-in help</small>
+                </div>
+                <div class="chat-actions">
+                    <button type="button" class="chat-link" id="chatClear">Clear</button>
+                    <button type="button" class="chat-close" id="chatClose" aria-label="Close assistant">×</button>
+                </div>
+            </header>
+            <div class="chat-log" id="chatLog" role="log" aria-live="polite"></div>
+            <div class="chat-chips" id="chatChips"></div>
+            <form class="chat-form" id="chatForm" autocomplete="off">
+                <label class="sr-only" for="chatInput">Your question</label>
+                <textarea id="chatInput" rows="1" maxlength="<?= (int) CHAT_MAX_INPUT ?>" placeholder="Ask about using HOFARS…"></textarea>
+                <button type="submit" class="chat-send" id="chatSend" aria-label="Send message">➤</button>
+            </form>
+            <p class="chat-foot">Answers can be wrong. For dangerous faults, contact hostel security first.</p>
+        </section>
+    </div>
+<?php endif; ?>
     <script src="assets/app.js"></script>
+<?php if ($user): ?>
+    <script src="assets/chat.js"></script>
+<?php endif; ?>
 </body>
 </html>
 <?php

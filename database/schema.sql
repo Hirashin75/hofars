@@ -92,6 +92,17 @@ CREATE TABLE report_history (
 
 CREATE INDEX idx_history_report ON report_history (report_id);
 
+-- Counts AI chatbot calls so usage can be capped (see CHAT_HOURLY_LIMIT / CHAT_DAILY_LIMIT in .env).
+CREATE TABLE chat_usage (
+  id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  user_id INT UNSIGNED NOT NULL,
+  created_at DATETIME NOT NULL,
+  CONSTRAINT fk_chat_user FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE INDEX idx_chat_user_time ON chat_usage (user_id, created_at);
+CREATE INDEX idx_chat_time ON chat_usage (created_at);
+
 INSERT INTO facilities (name) VALUES
   ('Tombol Pintu'),
   ('Kunci Bilik'),
