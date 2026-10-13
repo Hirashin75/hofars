@@ -6,6 +6,10 @@ Students report broken facilities, an admin assigns technicians, technicians upl
 Built with **PHP 8 (no framework), MySQL/MariaDB (PDO), vanilla JavaScript and plain CSS**, as a final year project.
 
 <!-- Add screenshots here: docs/login.png, docs/admin-dashboard.png, docs/report-detail.png -->
+![Login](login.png)
+![Admin Dashboard](admin-dashboard.png)
+![Report Detail](report-detail.png)
+
 
 ## Features
 
@@ -125,7 +129,7 @@ Turn on `APP_DEBUG=true` in `.env` to see the real error instead of "Something w
 
 ## Deploying a live demo
 
-Any PHP 8 + MySQL host works (for example InfinityFree, 000webhost-style free hosts, or a small VPS).
+Any PHP 8 + MySQL host works (for example Netlify).
 Upload the files, import `schema.sql`, create `.env`, set `APP_DEBUG=false`, and serve over HTTPS.
 Make sure the `uploads/` folder is writable and that your host honours `.htaccess` (Apache).
 On Nginx, add a rule denying direct access to `/uploads/`.
