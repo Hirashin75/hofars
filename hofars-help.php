@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 /**
  * JSON endpoint for the chat widget.
- *   GET  chat.php                         -> saved conversation, mode and suggestions
- *   POST chat.php  message=...  csrf=...  -> send a message
- *   POST chat.php  action=clear csrf=...  -> clear the conversation
+ *   GET  hofars-help.php                         -> saved conversation, mode and suggestions
+ *   POST hofars-help.php  message=...  csrf=...  -> send a message
+ *   POST hofars-help.php  action=clear csrf=...  -> clear the conversation
  */
 
 require __DIR__ . '/includes/bootstrap.php';

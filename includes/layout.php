@@ -114,7 +114,7 @@ function page_footer(): void
 <?php endif; ?>
     <script src="assets/app.js"></script>
 <?php if ($user): ?>
-    <script src="assets/chat.js"></script>
+    <script src="assets/hofars-assistant.js?v=5"></script>
 <?php endif; ?>
 </body>
 </html>

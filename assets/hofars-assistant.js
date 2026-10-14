@@ -1,4 +1,4 @@
-// HOFARS assistant widget. Talks to chat.php; all message text is inserted with textContent (never innerHTML).
+// HOFARS assistant widget. Talks to hofars-help.php; all message text is inserted with textContent (never innerHTML).
 (function () {
     'use strict';
 
@@ -87,7 +87,7 @@
 
     function load() {
         loaded = true;
-        fetch('chat.php', { credentials: 'same-origin' })
+        fetch('hofars-help.php', { credentials: 'same-origin' })
             .then(parse)
             .then(function (data) {
                 setMode(data.mode);
@@ -119,7 +119,7 @@
         body.append('csrf', csrf);
         body.append('message', text);
 
-        fetch('chat.php', { method: 'POST', body: body, credentials: 'same-origin' })
+        fetch('hofars-help.php', { method: 'POST', body: body, credentials: 'same-origin' })
             .then(parse)
             .then(function (data) {
                 typing.remove();
@@ -140,7 +140,7 @@
         var body = new FormData();
         body.append('csrf', csrf);
         body.append('action', 'clear');
-        fetch('chat.php', { method: 'POST', body: body, credentials: 'same-origin' })
+        fetch('hofars-help.php', { method: 'POST', body: body, credentials: 'same-origin' })
             .then(parse)
             .then(function () {
                 log.textContent = '';

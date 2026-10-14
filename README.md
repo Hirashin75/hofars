@@ -106,14 +106,14 @@ admin_users.php           create staff accounts
 report.php                report detail, timeline, work reports, review actions
 profile.php               profile + password
 download.php              access-checked file serving
-chat.php                  JSON endpoint behind the chat widget
+hofars-help.php                  JSON endpoint behind the chat widget
 includes/bootstrap.php    config, DB, session, security helpers
 includes/layout.php       shared header / footer (+ chat widget)
 includes/chatbot.php      built-in FAQ, Claude API call, usage limits
 database/schema.sql       tables + facility list
 database/seed.php         fake demo data (CLI only)
 database/migrations/      small upgrade scripts for existing databases
-assets/                   style.css, app.js, chat.js
+assets/                   style.css, app.js, hofars-assistant.js
 ```
 
 ## Troubleshooting
